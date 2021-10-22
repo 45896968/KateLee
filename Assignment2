@@ -1,0 +1,152 @@
+---
+title: "STAT2170 Applied Statistics Assignment"
+author: "Kate Lee 45896968"
+date: "20/10/2021"
+output: pdf
+---
+
+### Question 1
+## a
+Load data
+
+```{r}
+summary(paramo)
+```
+AR and EL are correlated with each other
+
+```{r}
+cor(paramo)
+```
+Diagonals are 1, meaning variables has perfect correlation with itself.
+
+## b
+
+Fitting a model
+```{r}
+paramo.lm=lm(N~AR+EL+DEc+DNI, data = paramo)
+summary(paramo.lm)
+```
+N abundance
+
+Overall ANOVA
+```{r}
+anova(paramo.lm)
+```
+Conducting an F test for overall regression
+
+Model
+$$
+Full Reg_ss=RegSS_AR+RegSS_EL|AR+Reg_DEc|AR,EL+RegSS_DNI|AR,EL,DEc
+$$
+$$
+=508+45.90+537.39+2.06 =1094.27
+$$
+$$
+Reg MS=\frac{RegSS}{K}=\frac{1094.27}{4}=273.568
+$$
+
+Null Hypothesis
+$$
+H_0:\beta_AR=\beta_EL=\beta_DEc=\beta_DNI=0 
+$$
+Alternate Hypothesis
+$$
+H_1: not all \beta_i=0
+$$
+Test Statistic
+$$
+F_obs= \frac{RegMS}{Res MS}=\frac{273.568}{44.95}=6.086
+$$
+P value
+$$
+=P(F_4,_9\geqslant6.086)=0.01181 > 0.01
+$$
+Conclusion
+Reject null hypothesis at the 5% level, strong evidence that not all means are equal to 0. 
+
+
+
+## c
+
+Validating model using all the predictors
+```{r}
+par(mfrow=c(1,2))
+qqnorm(paramo.lm$residuals, main = "Noraml Q-Q plot of residuals")
+plot(paramo.lm$fitted.values, paramo.lm$residuals, main = "Residuals vs Fitted", xlab = "Fitted", ylab = "Residuals")
+```
+The graph shows that it is appropriate to a multiple regression model 
+The N abundance value means
+
+##d
+$$
+R^2 = \frac{SS Regression}{SS Total}
+= \frac{SS Total-SS Residuals}{SS Total}
+= \frac{1498.86-404.59}{1498.86}
+=0.73
+$$
+It is the goodness of fit for linear regression model.
+
+
+##e
+The best multiple regression model that explains the data is the Multiple Linear Regression. 
+That is:
+```{r}
+paramo.lm=lm(N~AR+EL+DEc+DNI, data= paramo)
+```
+
+##f
+
+
+### Question 2
+
+## a
+For this study, the design is balanced. This is because:
+* All groups had equal sizes
+* The sum of squares were easy to obtain using simple equations
+* Could do this by hand if we wanted to
+
+## b
+Two preliminary graphs that investigate different features of data
+```{r}
+interaction.plot(TreeShrews.dat$Sleep, TreeShrews.dat$Shrews, TreeShrews.dat$HeartRates, trace.label = "Quality", xlab = "Sleep", ylab = "HeartRates")
+```
+There is a very strong interaction with shrews 2, 5, 6 and 3. It overlaps each other and are not parallel. There isn't much interaction between 3 and 4 as they are kind of parallel and follow the same pattern. All shrews are not parallel indicating strong interaction. 
+
+```{r}
+boxplot(TreeShrews.dat$HeartRates~TreeShrews.dat$Shrews+TreeShrews.dat$Sleep)
+```
+This box plot shows that:
+*
+
+## c
+We cannot fit a Two-Way ANOVA with interaction model to this dataset because:
+* The population from which the samples are obtained are not normally distributed.
+*The variances among population is not equal
+
+## d
+Model
+$$
+Y_ij=\mu+\epsilon_ij; \epsilon\sim N(0,\sigma^2)
+$$
+
+Null Hypothesis and alternate hypothesis
+$$ 
+H_0: \mu_0=\mu_1=...=\mu_6
+$$
+
+$$
+H_1: Not all means are equal
+$$
+$$
+F_obs= \frac{MS Treatment}{MS Residuals}=\frac{39.43}{11.64}=3.387\sim F_3, _3
+$$
+P-Value= 0.0843 
+
+which is more than 0.05, do not reject H0. 
+
+Conclusion: Do not reject Ho. We have evidence that all means are equal. 
+
+
+
+
+
